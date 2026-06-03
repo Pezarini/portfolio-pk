@@ -7,6 +7,7 @@
 export const site = {
   name: "Pedro Kelvin",
   initials: "PK",
+  whatsappNumber: "5519983715207",
   role: "Engenheiro de Software, Especialista em IA e Construtor de Produtos.",
   tagline: "Transformo IA em produtos, operações e negócios escaláveis.",
   cvHref: "/cv/pedro-kelvin-cv.pdf",
@@ -17,6 +18,7 @@ export const site = {
 } as const;
 
 export const nav = [
+  { label: "inicio", href: "#inicio" },
   { label: "Sobre", href: "#sobre" },
   { label: "Produtos & Cases", href: "#produtos" },
   { label: "Jornada", href: "#jornada" },
@@ -108,7 +110,7 @@ export const productJourney: ProductJourneyItem[] = [
     solution: "Simulador de entrevistas com IA, análise de voz em tempo real e feedback personalizado sobre conteúdo, clareza e postura.",
     stack: ["Next.js", "NestJS", "OpenAI", "Whisper", "PostgreSQL"],
     status: "Em desenvolvimento",
-    localUrl: "http://localhost:3001/",
+    localUrl: "https://entrevistai-front.vercel.app/",
   },
   {
     year: "2025",
@@ -141,7 +143,7 @@ export const products: Product[] = [
       "Plataforma de treinamento para entrevistas com IA, simulando conversas reais e oferecendo feedback personalizado para candidatos.",
     tags: ["OpenAI", "Voice AI", "Feedback Engine", "Interview Training"],
     image: "/projects/entrevistai.png",
-    localUrl: "http://localhost:3001/",
+    localUrl: "https://entrevistai-front.vercel.app/",
   },
   {
     name: "Certificai",

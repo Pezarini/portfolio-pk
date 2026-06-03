@@ -42,7 +42,9 @@ export function Contact() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button
-                href={`mailto:${site.email}?subject=Vamos%20conversar`}
+                href={`https://wa.me/${site.whatsappNumber}?text=Olá!%20Gostaria%20de%20agendar%20uma%20conversa.`}
+                target="_blank"
+                rel="noopener noreferrer"
                 variant="primary"
                 size="lg"
                 arrow

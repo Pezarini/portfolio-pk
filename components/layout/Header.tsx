@@ -61,7 +61,7 @@ export function Header() {
           >
             Currículo
           </Button>
-          <Button href="#contato" variant="primary" arrow className="h-10 px-4">
+          <Button href={`https://wa.me/${site.whatsappNumber}`} target="_blank" rel="noopener noreferrer" variant="primary" arrow className="h-10 px-4">
             Vamos conversar
           </Button>
         </div>
@@ -152,7 +152,9 @@ function MobileDrawer({
                 Ver currículo
               </Button>
               <Button
-                href="#contato"
+                href={`https://wa.me/${site.whatsappNumber}`}
+                target="_blank"
+                rel="noopener noreferrer"
                 variant="primary"
                 size="lg"
                 arrow
