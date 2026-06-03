@@ -17,10 +17,9 @@ export const site = {
 } as const;
 
 export const nav = [
-  { label: "Início", href: "#inicio" },
   { label: "Sobre", href: "#sobre" },
   { label: "Produtos & Cases", href: "#produtos" },
-  { label: "Experiência", href: "#experiencia" },
+  { label: "Jornada", href: "#jornada" },
   { label: "Formação", href: "#formacao" },
   { label: "Expertise", href: "#expertise" },
   { label: "Contato", href: "#contato" },
@@ -49,7 +48,6 @@ export const about = {
   paragraphs: [
     "Sou Full Stack Developer com foco em backend, IA e sistemas escaláveis. Trabalho desde a modelagem de APIs e arquitetura até a construção de agentes de IA, integrações com LLMs e produtos digitais completos.",
     "Tenho base sólida em Node.js, TypeScript, React e arquitetura limpa — mas o que me move é transformar tecnologia em resultado: enxergar o problema de negócio, desenhar a solução e construí-la de ponta a ponta.",
-    "Já entreguei sistemas enterprise na IBM e na Sensetek, e hoje construo meus próprios produtos de IA. Perfil técnico, visão de produto e mentalidade de quem constrói para escalar.",
   ],
   highlights: [
     "Backend & APIs escaláveis",
@@ -64,15 +62,64 @@ export type JourneyItem = {
   org: string;
   title: string;
   desc: string;
+  tech?: string[];
 };
 
 export const journey: JourneyItem[] = [
-  { year: "2021", org: "IBM", title: "Aprendiz de Desenvolvimento", desc: "Início da jornada em tecnologia: lógica de programação, Git, metodologias ágeis e primeiros sistemas." },
-  { year: "2023", org: "IBM", title: "Full Stack Developer", desc: "Desenvolvimento de APIs escaláveis, sistemas enterprise e aplicações distribuídas." },
-  { year: "2024", org: "Mobiis", title: "Junior Software Developer", desc: "Refatoração de plataforma React + TypeScript, com foco em arquitetura e performance." },
-  { year: "2025", org: "Sensetek", title: "Full Stack Developer · foco em IA", desc: "Construção de agentes de IA, integrações com LLMs e plataformas inteligentes corporativas." },
-  { year: "2025", org: "Entrevistai", title: "Produto próprio · em desenvolvimento", desc: "Plataforma de treino para entrevistas com IA, voz e feedback personalizado." },
-  { year: "2025", org: "Certificai", title: "Produto próprio · em desenvolvimento", desc: "Simulados inteligentes para certificações financeiras com diagnóstico por IA." },
+  {
+    year: "2021", org: "IBM", title: "Aprendiz de Desenvolvimento",
+    desc: "Início da jornada em tecnologia: lógica de programação, Git, metodologias ágeis e primeiros sistemas.",
+    tech: ["Git", "Metodologias Ágeis", "Node.js", "Lógica de Programação"],
+  },
+  {
+    year: "2023", org: "IBM", title: "Full Stack Developer",
+    desc: "Desenvolvimento de aplicações enterprise, APIs escaláveis, sistemas distribuídos e integrações internas usadas por milhares de usuários.",
+    tech: ["Node.js", "TypeScript", "MongoDB", "Vue.js", "Jest", "APIs REST"],
+  },
+  {
+    year: "2024", org: "Mobiis", title: "Junior Software Developer",
+    desc: "Refatoração de plataforma React + TypeScript, melhorando escalabilidade, manutenibilidade, performance e integração com APIs.",
+    tech: ["React", "TypeScript", "TailwindCSS", "API REST", "JWT"],
+  },
+  {
+    year: "2025", org: "Sensetek", title: "Full Stack Developer · foco em IA",
+    desc: "Desenvolvimento de agentes de IA, integrações com LLMs, APIs, dados corporativos e ferramentas enterprise.",
+    tech: ["Node.js", "TypeScript", "React", "OpenAI", "PostgreSQL", "Tool Calling"],
+  },
+];
+
+export type ProductJourneyItem = {
+  year: string;
+  name: string;
+  category: string;
+  problem: string;
+  solution: string;
+  stack: string[];
+  status: string;
+  localUrl?: string;
+};
+
+export const productJourney: ProductJourneyItem[] = [
+  {
+    year: "2025",
+    name: "Entrevistai",
+    category: "AI Training Platform",
+    problem: "Pessoas têm dificuldade para treinar entrevistas técnicas e comportamentais de forma realista antes de processos seletivos.",
+    solution: "Simulador de entrevistas com IA, análise de voz em tempo real e feedback personalizado sobre conteúdo, clareza e postura.",
+    stack: ["Next.js", "NestJS", "OpenAI", "Whisper", "PostgreSQL"],
+    status: "Em desenvolvimento",
+    localUrl: "http://localhost:3001/",
+  },
+  {
+    year: "2025",
+    name: "Certificai",
+    category: "EdTech • IA",
+    problem: "Preparação para CPA-10 e CPA-20 sem diagnóstico preciso sobre lacunas de conhecimento.",
+    solution: "Simulados inteligentes com avaliação por IA, diagnóstico de pontos fracos e trilha de estudo personalizada.",
+    stack: ["React", "Node.js", "OpenAI", "PostgreSQL"],
+    status: "Validação de mercado",
+    localUrl: "http://localhost:8080/",
+  },
 ];
 
 export type Product = {
@@ -94,7 +141,7 @@ export const products: Product[] = [
       "Plataforma de treinamento para entrevistas com IA, simulando conversas reais e oferecendo feedback personalizado para candidatos.",
     tags: ["OpenAI", "Voice AI", "Feedback Engine", "Interview Training"],
     image: "/projects/entrevistai.png",
-    localUrl: "http://localhost:3000",
+    localUrl: "http://localhost:3001/",
   },
   {
     name: "Certificai",
@@ -103,7 +150,7 @@ export const products: Product[] = [
       "Simulados inteligentes para certificações financeiras como CPA-10 e CPA-20, com diagnóstico por IA para medir o nível de preparação do usuário.",
     tags: ["CPA-10", "CPA-20", "AI Assessment", "EdTech"],
     image: "/projects/certificai.png",
-    localUrl: "http://localhost:8080",
+    localUrl: "http://localhost:8080/",
   },
   {
     name: "Sensetek AI Agent",
@@ -152,12 +199,13 @@ export type Credential = {
   org: string;
   year: string;
   type: "Graduação" | "Curso" | "Certificação";
+  logo?: string;
 };
 
 export const education: Credential[] = [
-  { title: "Análise e Desenvolvimento de Sistemas", org: "UNIP", year: "2025", type: "Graduação" },
-  { title: "Desenvolvimento Full Stack", org: "Fundação Bradesco", year: "2021", type: "Curso" },
-  { title: "Test-Driven Development", org: "IBM XP Farm", year: "2023", type: "Certificação" },
+  { title: "Análise e Desenvolvimento de Sistemas", org: "UNIP",             year: "2025", type: "Graduação",   logo: "/logos/unip.png"     },
+  { title: "Desenvolvimento Full Stack",             org: "Fundação Bradesco",year: "2021", type: "Curso",        logo: "/logos/bradesco.png" },
+  { title: "Test-Driven Development",                org: "IBM XP Farm",      year: "2023", type: "Certificação", logo: "/logos/ibm.png"      },
 ];
 
 export const udemyTopics = [

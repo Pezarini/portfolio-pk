@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -31,9 +32,15 @@ export function Education() {
               <Card className="h-full" spotlight={false}>
                 <div className="flex h-full flex-col p-6">
                   <div className="flex items-center justify-between">
-                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-white/[0.02] text-accent-bright">
-                      <Icon.document width={18} height={18} />
-                    </span>
+                    {c.logo ? (
+                      <div className="flex h-10 w-10 items-center justify-center opacity-80 transition-opacity duration-200 hover:opacity-100">
+                        <Image src={c.logo} alt={c.org} width={40} height={40} className="object-contain" />
+                      </div>
+                    ) : (
+                      <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-white/[0.02] text-accent-bright">
+                        <Icon.document width={18} height={18} />
+                      </span>
+                    )}
                     <span className="label-mono text-faint">{c.year}</span>
                   </div>
                   <Tag variant="accent" className="mt-5 w-fit">

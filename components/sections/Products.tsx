@@ -58,7 +58,7 @@ export function Products() {
 }
 
 function ProductCard({ product }: { product: Product }) {
-  return (
+  const cardContent = (
     <Card className="h-full">
       <div className="flex h-full flex-col p-5">
         <span className="label-mono text-faint">{product.category}</span>
@@ -86,6 +86,21 @@ function ProductCard({ product }: { product: Product }) {
       </div>
     </Card>
   );
+
+  if (product.localUrl) {
+    return (
+      <a
+        href={product.localUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block h-full"
+      >
+        {cardContent}
+      </a>
+    );
+  }
+
+  return <div className="h-full">{cardContent}</div>;
 }
 
 /** A browser-window frame holding the product screenshot (or a placeholder). */

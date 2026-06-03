@@ -16,12 +16,13 @@ export function Hero() {
       className="relative flex min-h-dvh scroll-mt-24 items-center overflow-hidden pb-16 pt-28 md:pt-32"
     >
       <Container>
-        <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
-          {/* ---- Left: copy ---- */}
+        <div className="grid gap-10 lg:grid-cols-2 lg:grid-rows-[auto_auto] lg:items-stretch lg:gap-x-14">
+          {/* ---- A: headline ---- */}
           <motion.div
             variants={staggerContainer(0.12, 0.05)}
             initial="hidden"
             animate="show"
+            className="order-1 lg:col-start-1 lg:row-start-1"
           >
             <motion.span
               variants={staggerItem}
@@ -42,7 +43,7 @@ export function Hero() {
               variants={staggerItem}
               className="mt-6 max-w-xl text-balance text-xl font-medium leading-snug text-ink/90 sm:text-2xl"
             >
-              Engenheiro de Software, Especialista em{" "}
+              Desenvolvedor de Software, Especialista em{" "}
               <span className="text-accent-gradient">IA</span> e Construtor de
               Produtos.
             </motion.h2>
@@ -53,10 +54,23 @@ export function Hero() {
             >
               {site.tagline}
             </motion.p>
+          </motion.div>
 
+          {/* ---- B: photo (dominant, frameless) ---- */}
+          <div className="order-2 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-stretch">
+            <HeroPhoto />
+          </div>
+
+          {/* ---- C: CTAs + stats strip ---- */}
+          <motion.div
+            variants={staggerContainer(0.1, 0.2)}
+            initial="hidden"
+            animate="show"
+            className="order-3 lg:col-start-1 lg:row-start-2 lg:self-end"
+          >
             <motion.div
               variants={staggerItem}
-              className="mt-8 flex flex-wrap items-center gap-3"
+              className="flex flex-wrap items-center gap-3"
             >
               <Button href="#produtos" variant="primary" size="lg" arrow>
                 Ver produtos &amp; cases
@@ -70,73 +84,59 @@ export function Hero() {
               >
                 Ver currículo
               </Button>
-              <Button href="#contato" variant="ghost" size="lg" arrow>
-                Vamos conversar
-              </Button>
+             
             </motion.div>
 
-            <motion.div
-              variants={staggerItem}
-              className="mt-12 hidden items-center gap-2.5 text-faint sm:flex"
-            >
-              <span className="inline-flex h-7 w-5 items-start justify-center rounded-full border border-line-strong pt-1.5">
-                <motion.span
-                  className="h-1.5 w-0.5 rounded-full bg-accent-bright"
-                  animate={{ y: [0, 5, 0], opacity: [1, 0.3, 1] }}
-                  transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-                />
-              </span>
-              <span className="label-mono">Scroll para explorar</span>
-            </motion.div>
+            <motion.div variants={staggerItem} className="mt-8 h-px w-full hairline" />
+
+            <AuthorityStrip />
           </motion.div>
-
-          {/* ---- Right: photo + authority cards ---- */}
-          <div className="flex flex-col items-stretch gap-5 sm:flex-row sm:items-center lg:gap-6">
-            <HeroPhoto />
-            <AuthorityCards />
-          </div>
         </div>
       </Container>
     </section>
   );
 }
 
+const PHOTO_MASK =
+  "radial-gradient(72% 82% at 58% 38%, #000 56%, transparent 92%)";
+
 function HeroPhoto() {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.96, y: 16 }}
+      initial={{ opacity: 0, scale: 0.97, y: 16 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-      className="relative mx-auto w-full max-w-md sm:flex-1"
+      className="relative mx-auto h-[56vh] min-h-[400px] w-full max-w-lg lg:h-full lg:min-h-[34rem] lg:max-w-none"
     >
-      {/* Glow behind — centrado atrás do rosto/torso */}
+      {/* Glow behind the subject */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 translate-y-6 scale-110 rounded-[2rem] blur-3xl [animation:glow-pulse_6s_ease-in-out_infinite]"
+        className="absolute inset-0 -z-10 scale-110 blur-3xl [animation:glow-pulse_6s_ease-in-out_infinite]"
         style={{
           background:
-            "radial-gradient(65% 65% at 50% 35%, color-mix(in oklab, var(--color-accent) 55%, transparent), transparent 70%)",
+            "radial-gradient(70% 70% at 58% 40%, color-mix(in oklab, var(--color-accent) 55%, transparent), transparent 70%)",
         }}
       />
-      <div className="relative aspect-[2/3] overflow-hidden rounded-[1.75rem] border border-line-strong bg-bg-elev">
-        <Image
-          src="/hero/pedro-kelvin.png"
-          alt={`${site.name}, Engenheiro de Software e construtor de produtos de IA`}
-          fill
-          priority
-          sizes="(max-width: 1024px) 80vw, 448px"
-          className="object-cover"
-          style={{ objectPosition: "center 15%" }}
-        />
-        {/* Blend suave das bordas no tema dark */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg via-bg/20 to-transparent" />
-        <div className="pointer-events-none absolute inset-0 rounded-[1.75rem] ring-1 ring-inset ring-white/5" />
-      </div>
+      <Image
+        src="/hero/pedro-kelvin.png"
+        alt={`${site.name}, Engenheiro de Software e construtor de produtos de IA`}
+        fill
+        priority
+        sizes="(max-width: 1024px) 90vw, 620px"
+        className="object-cover"
+        style={{
+          objectPosition: "center 18%",
+          WebkitMaskImage: PHOTO_MASK,
+          maskImage: PHOTO_MASK,
+        }}
+      />
+      {/* Blend the base into the dark / stats strip */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-bg to-transparent" />
     </motion.div>
   );
 }
 
-function AuthorityCards() {
+function AuthorityStrip() {
   const icons = {
     calendar: Icon.calendar,
     cube: Icon.cube,
@@ -145,10 +145,10 @@ function AuthorityCards() {
   };
   return (
     <motion.ul
-      variants={staggerContainer(0.1, 0.5)}
+      variants={staggerContainer(0.08, 0.1)}
       initial="hidden"
       animate="show"
-      className="grid grid-cols-2 gap-3 sm:flex sm:w-[15rem] sm:flex-col lg:w-[16.5rem]"
+      className="mt-8 grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-4 sm:gap-y-0"
     >
       {authorityStats.map((s) => {
         const I = icons[s.icon];
@@ -156,24 +156,19 @@ function AuthorityCards() {
           <motion.li
             key={s.title}
             variants={staggerItem}
-            className="group rounded-2xl border border-line bg-bg-elev/60 p-3.5 backdrop-blur-sm transition-colors duration-300 hover:border-accent/40"
+            className="sm:border-l sm:border-line sm:pl-6 sm:first:border-l-0 sm:first:pl-0"
           >
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-line bg-white/[0.02] text-accent-bright transition-colors group-hover:border-accent/40">
-              <I width={18} height={18} />
-            </span>
-            <p className="mt-3 text-lg font-semibold leading-none tracking-tight text-ink">
+            <div className="flex items-center gap-2 text-base font-semibold tracking-tight text-ink">
+              <I width={16} height={16} className="text-accent-bright" />
               {s.value !== null ? (
                 <CountUp value={s.value} prefix={s.prefix} suffix={s.suffix} />
               ) : (
-                s.title
+                <span>{s.title}</span>
               )}
+            </div>
+            <p className="mt-1.5 text-xs leading-tight text-faint">
+              {s.value !== null ? `${s.title} ${s.desc}` : s.desc}
             </p>
-            <p className="mt-1.5 text-[0.8rem] leading-tight text-muted">
-              {s.value !== null ? s.title : s.desc}
-            </p>
-            {s.value !== null && (
-              <p className="text-[0.8rem] leading-tight text-faint">{s.desc}</p>
-            )}
           </motion.li>
         );
       })}
