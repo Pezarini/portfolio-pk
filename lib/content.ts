@@ -10,7 +10,7 @@ export const site = {
   whatsappNumber: "5519983715207",
   role: "Engenheiro de Software, Especialista em IA e Construtor de Produtos.",
   tagline: "Transformo IA em produtos, operações e negócios escaláveis.",
-  cvHref: "/cv/pedro-kelvin-cv.pdf",
+  cvHref: "/cv/Pedro-Kelvin-Resume.pdf",
   location: "Campinas, SP — Brasil",
   email: "pedrokelvin08601@gmail.com",
   linkedin: { label: "linkedin.com/in/pedro-kelvin", href: "https://linkedin.com/in/pedro-kelvin/" },
