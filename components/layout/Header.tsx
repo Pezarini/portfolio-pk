@@ -5,10 +5,39 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/icons";
-import { nav, site } from "@/lib/content";
+import { localePath, type Dictionary, type Locale } from "@/lib/i18n";
+import { mailto, site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
-export function Header() {
+/** The language to switch *to* (the site has two locales). */
+const otherLocale = (lang: Locale): Locale => (lang === "en" ? "pt-br" : "en");
+
+function LangSwitch({
+  lang,
+  d,
+  className,
+}: {
+  lang: Locale;
+  d: Dictionary["header"]["langSwitch"];
+  className?: string;
+}) {
+  return (
+    <a
+      href={localePath(otherLocale(lang))}
+      hrefLang={d.langAttr}
+      lang={d.langAttr}
+      aria-label={`${d.short} — ${d.label}`}
+      className={cn(
+        "label-mono inline-flex h-10 items-center justify-center rounded-full border border-line px-3 text-muted transition-colors hover:border-accent/50 hover:text-ink",
+        className,
+      )}
+    >
+      {d.short}
+    </a>
+  );
+}
+
+export function Header({ lang, nav, d: h }: { lang: Locale; nav: Dictionary["nav"]; d: Dictionary["header"] }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -37,7 +66,7 @@ export function Header() {
         )}
         style={{ width: "calc(100% - 1.5rem)" }}
       >
-        <Logo />
+        <Logo label={h.homeLabel} />
 
         <nav className="hidden items-center gap-1 lg:flex">
           {nav.map((item) => (
@@ -52,6 +81,7 @@ export function Header() {
         </nav>
 
         <div className="hidden items-center gap-2 lg:flex">
+          <LangSwitch lang={lang} d={h.langSwitch} />
           <Button
             href={site.cvHref}
             target="_blank"
@@ -59,34 +89,41 @@ export function Header() {
             variant="secondary"
             className="h-10 px-4"
           >
-            Currículo
+            {h.resume}
           </Button>
-          <Button href={`https://wa.me/${site.whatsappNumber}`} target="_blank" rel="noopener noreferrer" variant="primary" arrow className="h-10 px-4">
-            Vamos conversar
+          <Button href={mailto} variant="primary" arrow className="h-10 px-4">
+            {h.email}
           </Button>
         </div>
 
         {/* Mobile / tablet toggle */}
-        <button
-          type="button"
-          aria-label="Abrir menu"
-          aria-expanded={open}
-          onClick={() => setOpen(true)}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink transition-colors hover:border-accent/50 lg:hidden"
-        >
-          <Icon.menu />
-        </button>
+        <div className="flex items-center gap-2 lg:hidden">
+          <LangSwitch lang={lang} d={h.langSwitch} />
+          <button
+            type="button"
+            aria-label={h.openMenu}
+            aria-expanded={open}
+            onClick={() => setOpen(true)}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink transition-colors hover:border-accent/50"
+          >
+            <Icon.menu />
+          </button>
+        </div>
       </div>
 
-      <MobileDrawer open={open} onClose={() => setOpen(false)} />
+      <MobileDrawer nav={nav} h={h} open={open} onClose={() => setOpen(false)} />
     </header>
   );
 }
 
 function MobileDrawer({
+  nav,
+  h,
   open,
   onClose,
 }: {
+  nav: Dictionary["nav"];
+  h: Dictionary["header"];
   open: boolean;
   onClose: () => void;
 }) {
@@ -109,10 +146,10 @@ function MobileDrawer({
           <div className="absolute inset-0 bg-bg/95 backdrop-blur-xl" />
           <div className="relative flex h-dvh flex-col p-6">
             <div className="flex h-14 items-center justify-between">
-              <Logo />
+              <Logo label={h.homeLabel} />
               <button
                 type="button"
-                aria-label="Fechar menu"
+                aria-label={h.closeMenu}
                 onClick={onClose}
                 className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink"
               >
@@ -149,19 +186,17 @@ function MobileDrawer({
                 className="w-full"
                 onClick={onClose}
               >
-                Ver currículo
+                {h.resume}
               </Button>
               <Button
-                href={`https://wa.me/${site.whatsappNumber}`}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={mailto}
                 variant="primary"
                 size="lg"
                 arrow
                 className="w-full"
                 onClick={onClose}
               >
-                Vamos conversar
+                {h.email}
               </Button>
             </div>
           </div>

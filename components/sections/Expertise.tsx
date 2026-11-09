@@ -6,25 +6,16 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Card } from "@/components/ui/Card";
 import { Icon } from "@/components/ui/icons";
 import { staggerContainer, staggerItem, viewportOnce } from "@/lib/motion";
-import { expertise } from "@/lib/content";
+import type { Dictionary } from "@/lib/i18n";
 
-const icons = {
-  ai: Icon.ai,
-  backend: Icon.backend,
-  frontend: Icon.frontend,
-  architecture: Icon.architecture,
-  cloud: Icon.cloud,
-  testing: Icon.testing,
-};
-
-export function Expertise() {
+export function Expertise({ d }: { d: Dictionary["skills"] }) {
   return (
-    <section id="expertise" className="scroll-mt-24 py-24 md:py-32">
+    <section id="skills" className="scroll-mt-24 py-24 md:py-32">
       <Container>
         <SectionHeading
-          eyebrow="Expertise"
-          title="Tecnologias e habilidades."
-          subtitle="Stack completa, do backend e arquitetura à construção de agentes de IA e interfaces modernas."
+          eyebrow={d.eyebrow}
+          title={d.title}
+          subtitle={d.subtitle}
         />
 
         <motion.div
@@ -32,10 +23,10 @@ export function Expertise() {
           initial="hidden"
           whileInView="show"
           viewport={viewportOnce}
-          className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+          className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
         >
-          {expertise.map((group) => {
-            const I = icons[group.icon];
+          {d.groups.map((group) => {
+            const I = Icon[group.icon];
             return (
               <motion.div key={group.title} variants={staggerItem} className="h-full">
                 <Card className="h-full" spotlight>

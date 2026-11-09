@@ -1,11 +1,11 @@
 import { cn } from "@/lib/utils";
-import { site } from "@/lib/content";
+import { site } from "@/lib/site";
 
-export function Logo({ className }: { className?: string }) {
+export function Logo({ label, className }: { label: string; className?: string }) {
   return (
     <a
-      href="#inicio"
-      aria-label={`${site.name} — início`}
+      href="#top"
+      aria-label={label}
       className={cn(
         "group inline-flex items-baseline text-lg font-semibold tracking-tight text-ink transition-colors",
         className,

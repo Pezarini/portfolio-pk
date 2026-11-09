@@ -7,19 +7,25 @@ import { Eyebrow } from "@/components/ui/SectionHeading";
 import { Logo } from "@/components/layout/Logo";
 import { Icon } from "@/components/ui/icons";
 import { reveal, staggerContainer, staggerItem, viewportOnce } from "@/lib/motion";
-import { contact, site } from "@/lib/content";
+import { mailto, site } from "@/lib/site";
+import type { Dictionary } from "@/lib/i18n";
 
-const channels = [
-  { icon: Icon.pin, label: "Localização", value: site.location, href: undefined },
-  { icon: Icon.mail, label: "E-mail", value: site.email, href: `mailto:${site.email}` },
-  { icon: Icon.linkedin, label: "LinkedIn", value: site.linkedin.label, href: site.linkedin.href },
-  { icon: Icon.github, label: "GitHub", value: site.github.label, href: site.github.href },
-] as const;
-
-export function Contact() {
+export function Contact({
+  d: contact,
+  homeLabel,
+}: {
+  d: Dictionary["contact"];
+  homeLabel: string;
+}) {
   const year = new Date().getFullYear();
+  const channels = [
+    { icon: Icon.pin, label: contact.locationLabel, value: contact.location, href: undefined },
+    { icon: Icon.mail, label: contact.emailLabel, value: site.email, href: mailto },
+    { icon: Icon.linkedin, label: contact.linkedinLabel, value: site.linkedin.label, href: site.linkedin.href },
+    { icon: Icon.github, label: contact.githubLabel, value: site.github.label, href: site.github.href },
+  ] as const;
   return (
-    <footer id="contato" className="relative scroll-mt-24 pt-24 md:pt-32">
+    <footer id="contact" className="relative scroll-mt-24 pt-24 md:pt-32">
       {/* Glow accent above the contact block */}
       <div
         aria-hidden
@@ -40,25 +46,31 @@ export function Contact() {
             <p className="mt-6 max-w-md text-base leading-relaxed text-muted">
               {contact.subtitle}
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button
-                href={`https://wa.me/${site.whatsappNumber}?text=Olá!%20Gostaria%20de%20agendar%20uma%20conversa.`}
-                target="_blank"
-                rel="noopener noreferrer"
-                variant="primary"
-                size="lg"
-                arrow
-              >
-                Agendar conversa
+            <p className="mt-4 flex max-w-md items-start gap-2.5 text-sm leading-snug text-ink/80">
+              <Icon.pin width={16} height={16} className="mt-0.5 shrink-0 text-accent-bright" />
+              {contact.availability}
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Button href={mailto} variant="primary" size="lg" arrow>
+                {contact.ctaEmail}
               </Button>
               <Button
-                href={site.cvHref}
+                href={site.linkedin.href}
                 target="_blank"
                 rel="noopener noreferrer"
                 variant="secondary"
                 size="lg"
               >
-                Ver currículo
+                {contact.ctaLinkedin}
+              </Button>
+              <Button
+                href={site.cvHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="ghost"
+                size="lg"
+              >
+                {contact.ctaResume}
               </Button>
             </div>
           </motion.div>
@@ -109,15 +121,15 @@ export function Contact() {
 
         {/* Bottom bar */}
         <div className="mt-20 flex flex-col items-center justify-between gap-6 border-t border-line py-8 sm:flex-row">
-          <Logo />
+          <Logo label={homeLabel} />
           <p className="text-sm text-faint">
-            © {year} {site.name}. Todos os direitos reservados.
+            © {year} {site.fullName}. {contact.rights}
           </p>
           <div className="flex items-center gap-2">
             {[
-              { href: site.linkedin.href, I: Icon.linkedin, label: "LinkedIn" },
-              { href: site.github.href, I: Icon.github, label: "GitHub" },
-              { href: `mailto:${site.email}`, I: Icon.mail, label: "E-mail" },
+              { href: site.linkedin.href, I: Icon.linkedin, label: contact.linkedinLabel },
+              { href: site.github.href, I: Icon.github, label: contact.githubLabel },
+              { href: mailto, I: Icon.mail, label: contact.emailLabel },
             ].map(({ href, I, label }) => (
               <a
                 key={label}

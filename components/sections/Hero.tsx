@@ -4,15 +4,15 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
-import { CountUp } from "@/components/ui/CountUp";
 import { Icon } from "@/components/ui/icons";
 import { lineReveal, staggerContainer, staggerItem } from "@/lib/motion";
-import { authorityStats, site } from "@/lib/content";
+import { mailto, site } from "@/lib/site";
+import type { Dictionary } from "@/lib/i18n";
 
-export function Hero() {
+export function Hero({ d }: { d: Dictionary["hero"] }) {
   return (
     <section
-      id="inicio"
+      id="top"
       className="relative flex min-h-dvh scroll-mt-24 items-center overflow-hidden pb-16 pt-28 md:pt-32"
     >
       <Container>
@@ -29,7 +29,7 @@ export function Hero() {
               className="label-mono inline-flex items-center gap-2.5 text-accent-bright"
             >
               <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_12px_2px_var(--color-accent)]" />
-              Olá, eu sou
+              {d.eyebrow}
             </motion.span>
 
             <h1 className="mt-5 overflow-hidden text-balance text-5xl font-semibold leading-[0.98] tracking-tight sm:text-6xl md:text-7xl">
@@ -43,22 +43,32 @@ export function Hero() {
               variants={staggerItem}
               className="mt-6 max-w-xl text-balance text-xl font-medium leading-snug text-ink/90 sm:text-2xl"
             >
-              Desenvolvedor de Software, Especialista em{" "}
-              <span className="text-accent-gradient">IA</span> e Construtor de
-              Produtos.
+              {d.role} <span className="text-accent-gradient">{d.roleAccent}</span>
             </motion.h2>
 
             <motion.p
               variants={staggerItem}
               className="mt-5 max-w-md text-base leading-relaxed text-muted sm:text-lg"
             >
-              {site.tagline}
+              {d.tagline}
+            </motion.p>
+
+            <motion.p variants={staggerItem} className="label-mono mt-4 max-w-md text-faint">
+              {d.stack}
+            </motion.p>
+
+            <motion.p
+              variants={staggerItem}
+              className="mt-5 flex max-w-md items-start gap-2.5 text-sm leading-snug text-ink/80"
+            >
+              <Icon.pin width={16} height={16} className="mt-0.5 shrink-0 text-accent-bright" />
+              {d.availability}
             </motion.p>
           </motion.div>
 
           {/* ---- B: photo (dominant, frameless) ---- */}
           <div className="order-2 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-stretch">
-            <HeroPhoto />
+            <HeroPhoto alt={d.photoAlt} />
           </div>
 
           {/* ---- C: CTAs + stats strip ---- */}
@@ -72,24 +82,32 @@ export function Hero() {
               variants={staggerItem}
               className="flex flex-wrap items-center gap-3"
             >
-              <Button href="#produtos" variant="primary" size="lg" arrow>
-                Ver produtos &amp; cases
+              <Button href={mailto} variant="primary" size="lg" arrow>
+                {d.ctaEmail}
               </Button>
               <Button
-                href={site.cvHref}
+                href={site.linkedin.href}
                 target="_blank"
                 rel="noopener noreferrer"
                 variant="secondary"
                 size="lg"
               >
-                Ver currículo
+                {d.ctaLinkedin}
               </Button>
-             
+              <Button
+                href={site.cvHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="ghost"
+                size="lg"
+              >
+                {d.ctaResume}
+              </Button>
             </motion.div>
 
             <motion.div variants={staggerItem} className="mt-8 h-px w-full hairline" />
 
-            <AuthorityStrip />
+            <StatsStrip stats={d.stats} />
           </motion.div>
         </div>
       </Container>
@@ -100,7 +118,7 @@ export function Hero() {
 const PHOTO_MASK =
   "radial-gradient(72% 82% at 58% 38%, #000 56%, transparent 92%)";
 
-function HeroPhoto() {
+function HeroPhoto({ alt }: { alt: string }) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.97, y: 16 }}
@@ -119,7 +137,7 @@ function HeroPhoto() {
       />
       <Image
         src="/hero/pedro-kelvin.png"
-        alt={`${site.name}, Engenheiro de Software e construtor de produtos de IA`}
+        alt={alt}
         fill
         priority
         sizes="(max-width: 1024px) 90vw, 620px"
@@ -136,39 +154,24 @@ function HeroPhoto() {
   );
 }
 
-function AuthorityStrip() {
-  const icons = {
-    calendar: Icon.calendar,
-    cube: Icon.cube,
-    building: Icon.building,
-    brain: Icon.brain,
-  };
+/** Verifiable, text-only facts (no counters: the SSR HTML must never show a zero). */
+function StatsStrip({ stats }: { stats: Dictionary["hero"]["stats"] }) {
   return (
     <motion.ul
       variants={staggerContainer(0.08, 0.1)}
       initial="hidden"
       animate="show"
-      className="mt-8 grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-4 sm:gap-y-0"
+      className="mt-8 grid grid-cols-1 gap-x-8 gap-y-6 min-[420px]:grid-cols-2"
     >
-      {authorityStats.map((s) => {
-        const I = icons[s.icon];
+      {stats.map((s) => {
+        const I = Icon[s.icon];
         return (
-          <motion.li
-            key={s.title}
-            variants={staggerItem}
-            className="sm:border-l sm:border-line sm:pl-6 sm:first:border-l-0 sm:first:pl-0"
-          >
-            <div className="flex items-center gap-2 text-base font-semibold tracking-tight text-ink">
-              <I width={16} height={16} className="text-accent-bright" />
-              {s.value !== null ? (
-                <CountUp value={s.value} prefix={s.prefix} suffix={s.suffix} />
-              ) : (
-                <span>{s.title}</span>
-              )}
+          <motion.li key={s.title} variants={staggerItem}>
+            <div className="flex items-start gap-2 text-base font-semibold leading-tight tracking-tight text-ink">
+              <I width={16} height={16} className="mt-0.5 shrink-0 text-accent-bright" />
+              <span>{s.title}</span>
             </div>
-            <p className="mt-1.5 text-xs leading-tight text-faint">
-              {s.value !== null ? `${s.title} ${s.desc}` : s.desc}
-            </p>
+            <p className="mt-1.5 text-xs leading-tight text-faint">{s.desc}</p>
           </motion.li>
         );
       })}

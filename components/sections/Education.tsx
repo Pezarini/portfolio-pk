@@ -7,17 +7,17 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import { Icon } from "@/components/ui/icons";
-import { reveal, staggerContainer, staggerItem, viewportOnce } from "@/lib/motion";
-import { education, udemyTopics } from "@/lib/content";
+import { staggerContainer, staggerItem, viewportOnce } from "@/lib/motion";
+import type { Dictionary } from "@/lib/i18n";
 
-export function Education() {
+export function Education({ d }: { d: Dictionary["education"] }) {
   return (
-    <section id="formacao" className="scroll-mt-24 py-24 md:py-32">
+    <section id="education" className="scroll-mt-24 py-24 md:py-32">
       <Container>
         <SectionHeading
-          eyebrow="Formação & Cursos"
-          title="Credenciais e aprendizado contínuo."
-          subtitle="Base acadêmica formal somada a uma rotina constante de estudo em tecnologias modernas."
+          eyebrow={d.eyebrow}
+          title={d.title}
+          subtitle={d.subtitle}
         />
 
         <motion.div
@@ -27,8 +27,8 @@ export function Education() {
           viewport={viewportOnce}
           className="mt-14 grid gap-5 md:grid-cols-3"
         >
-          {education.map((c) => (
-            <motion.div key={c.title} variants={staggerItem} className="h-full">
+          {d.items.map((c) => (
+            <motion.div key={`${c.org}-${c.title}`} variants={staggerItem} className="h-full">
               <Card className="h-full" spotlight={false}>
                 <div className="flex h-full flex-col p-6">
                   <div className="flex items-center justify-between">
@@ -41,7 +41,7 @@ export function Education() {
                         <Icon.document width={18} height={18} />
                       </span>
                     )}
-                    <span className="label-mono text-faint">{c.year}</span>
+                    <span className="label-mono text-faint">{c.period}</span>
                   </div>
                   <Tag variant="accent" className="mt-5 w-fit">
                     {c.type}
@@ -54,32 +54,6 @@ export function Education() {
               </Card>
             </motion.div>
           ))}
-        </motion.div>
-
-        {/* Udemy / complementary courses */}
-        <motion.div
-          variants={reveal}
-          initial="hidden"
-          whileInView="show"
-          viewport={viewportOnce}
-          className="mt-5 rounded-2xl border border-line bg-bg-elev/40 p-6 md:p-8"
-        >
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            <div className="max-w-md">
-              <span className="label-mono text-accent-bright">
-                Cursos complementares · Udemy
-              </span>
-              <p className="mt-3 text-sm leading-relaxed text-muted">
-                Estudo contínuo em desenvolvimento, backend, frontend, IA,
-                arquitetura e cloud para acompanhar a evolução do mercado.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2 md:max-w-md md:justify-end">
-              {udemyTopics.map((t) => (
-                <Tag key={t}>{t}</Tag>
-              ))}
-            </div>
-          </div>
         </motion.div>
       </Container>
     </section>

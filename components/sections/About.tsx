@@ -5,11 +5,11 @@ import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/SectionHeading";
 import { Icon } from "@/components/ui/icons";
 import { reveal, staggerContainer, staggerItem, viewportOnce } from "@/lib/motion";
-import { about } from "@/lib/content";
+import type { Dictionary } from "@/lib/i18n";
 
-export function About() {
+export function About({ d: about }: { d: Dictionary["about"] }) {
   return (
-    <section id="sobre" className="scroll-mt-24 py-24 md:py-32">
+    <section id="about" className="scroll-mt-24 py-24 md:py-32">
       <Container>
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           <motion.div
@@ -34,6 +34,11 @@ export function About() {
                 </li>
               ))}
             </ul>
+
+            <p className="mt-8 text-sm text-muted">
+              <span className="label-mono block text-faint">{about.languagesLabel}</span>
+              <span className="mt-1.5 block">{about.languages}</span>
+            </p>
           </motion.div>
 
           <motion.div
