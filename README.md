@@ -1,57 +1,50 @@
-# Portfólio — Pedro Kelvin
+# Portfolio — Pedro Kelvin
 
-Portfólio premium dark, construído como uma landing page de página única para
-posicionar Pedro Kelvin como **Engenheiro de Software, Especialista em IA e
-Construtor de Produtos**.
+Single-page portfolio for Pedro Kelvin, Full Stack Engineer (backend-focused),
+building LLM agents with tool calling in production. English by default, with
+a Brazilian Portuguese version.
 
 ## Stack
 
 - **Next.js 16** (App Router) · **React 19** · **TypeScript**
-- **Tailwind CSS v4** (tokens via `@theme` em `app/globals.css`)
-- **Framer Motion** (reveals no scroll, count-up, botões magnéticos, cursor custom)
-- **Geist** (Sans + Mono) — sem fontes externas
+- **Tailwind CSS v4** (tokens via `@theme` in `app/globals.css`)
+- **Framer Motion** (scroll reveals, magnetic buttons, custom cursor)
+- **Geist** (Sans + Mono), no external fonts
 
-## Rodar localmente
+## Run locally
 
 ```bash
 npm install
 npm run dev      # http://localhost:3000
-npm run build    # build de produção
-npm run start    # servir o build
+npm run lint
+npm run build    # production build
+npm run start    # serve the build
 ```
 
-## Onde editar o conteúdo
+## Internationalization
 
-Todo o texto e os dados vivem em **`lib/content.ts`** (fonte única). Os
-componentes apenas mapeiam esses dados — para mudar copy, jornada, produtos,
-experiência, formação, expertise ou contato, edite só esse arquivo.
+- English is the default and is served at `/`; Brazilian Portuguese lives at `/pt-br`.
+- `proxy.ts` rewrites `/` to the internal `/en` route and redirects `/en` back to `/`.
+- Routes live under `app/[lang]/`; `<html lang>`, canonical, `hreflang`, Open Graph
+  and JSON-LD are generated per locale in `app/[lang]/layout.tsx` and `page.tsx`.
 
-## Substituir as imagens
+## Where to edit content
 
-Os arquivos abaixo já existem como **placeholders gerados**. Basta sobrescrever
-cada um mantendo o mesmo nome — nenhum código precisa mudar.
+- Copy: `lib/i18n/en.ts` and `lib/i18n/pt-br.ts`. Both implement the `Dictionary`
+  type in `lib/i18n/types.ts`, so the compiler flags a missing translation.
+- Locale-independent facts (name, email, links, résumé path, site URL): `lib/site.ts`.
+- Components are presentation-only and receive their slice of the dictionary as props.
 
-| O quê | Caminho | Sugestão |
-|---|---|---|
-| Sua foto (hero) | `public/hero/pedro-kelvin.png` | retrato, fundo escuro/azul já combina (crop 4:5) |
-| Screenshot Entrevistai | `public/projects/entrevistai.png` | 1ª tela do SaaS (`localhost:3000`), ~1280×800 |
-| Screenshot Certificai | `public/projects/certificai.png` | 1ª tela do SaaS (`localhost:8080`), ~1280×800 |
-| Screenshot Sensetek (opcional) | `public/projects/sensetek.png` | tela do agente, ~1280×800 |
-| Currículo (PDF) | `public/cv/pedro-kelvin-cv.pdf` | seu CV real |
-| Imagem de compartilhamento (OG) | `public/og.png` | 1200×630 |
+## Assets
 
-> Os placeholders podem ser regerados com `node scripts/gen-placeholders.mjs`.
+| What | Path |
+|---|---|
+| Hero photo | `public/hero/pedro-kelvin.png` |
+| Résumé (PDF) | `public/cv/Pedro-Kelvin-Resume.pdf` |
+| Open Graph image (1200×630) | `public/og.png` |
+| Education logos | `public/logos/` |
 
-## Estrutura
+## Content rules
 
-```
-app/            layout (fontes, metadata, FX), page (monta as seções), globals.css
-components/
-  layout/       Header, MobileNav, Logo
-  sections/     Hero, About, Journey, Products, Experience, Education, Expertise, Contact
-  ui/           Button, Card, Container, SectionHeading, Reveal, Tag, CountUp, icons
-  fx/           BackgroundFX (mesh + grain), CustomCursor
-lib/            content.ts (dados) · motion.ts (variants) · utils.ts (cn)
-```
-
-Todas as animações respeitam `prefers-reduced-motion`.
+Every claim on the site must match the verified profile. Anything not yet confirmed
+is marked `TODO-OWNER` in the code.
