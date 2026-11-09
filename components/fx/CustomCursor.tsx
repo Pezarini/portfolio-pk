@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import {
   motion,
   useMotionValue,
@@ -12,9 +12,18 @@ import {
  * A subtle blended cursor ring (fine pointers only). Grows and brightens
  * over interactive elements. Disabled for touch and reduced-motion users.
  */
+const FINE_POINTER = "(pointer: fine)";
+function subscribeFinePointer(cb: () => void) {
+  const mq = window.matchMedia(FINE_POINTER);
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+}
+const getFinePointer = () => window.matchMedia(FINE_POINTER).matches;
+
 export function CustomCursor() {
   const reduce = useReducedMotion();
-  const [enabled, setEnabled] = useState(false);
+  const finePointer = useSyncExternalStore(subscribeFinePointer, getFinePointer, () => false);
+  const enabled = finePointer && !reduce;
   const [active, setActive] = useState(false);
   const [hidden, setHidden] = useState(true);
 
@@ -24,10 +33,7 @@ export function CustomCursor() {
   const sy = useSpring(y, { stiffness: 500, damping: 40, mass: 0.3 });
 
   useEffect(() => {
-    if (reduce) return;
-    const fine = window.matchMedia("(pointer: fine)");
-    if (!fine.matches) return;
-    setEnabled(true);
+    if (!enabled) return;
 
     function move(e: MouseEvent) {
       x.set(e.clientX);
@@ -47,7 +53,7 @@ export function CustomCursor() {
       window.removeEventListener("mousemove", move);
       document.removeEventListener("mouseleave", leave);
     };
-  }, [reduce, x, y]);
+  }, [enabled, x, y]);
 
   if (!enabled) return null;
 

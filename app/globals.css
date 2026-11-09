@@ -13,7 +13,7 @@
 
   --color-ink: #eef1f6;
   --color-muted: #9aa3b5;
-  --color-faint: #6b7385;
+  --color-faint: #7a8396; /* >= 4.5:1 on bg, bg-elev and bg-elev2 */
 
   --color-accent: #2d6bff;
   --color-accent-bright: #5b8cff;
